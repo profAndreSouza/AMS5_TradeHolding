@@ -1,3 +1,6 @@
+# Projeto Inicial de exemplo
+dotnet new webapi -n userApi
+
 # Estrutura do Projeto
 
 ```
@@ -60,3 +63,6 @@ Isso garante **separação de responsabilidades**, facilitando manutenção e es
  - dotnet add package Swashbuckle.AspNetCore 
  - dotnet add package Microsoft.EntityFrameworkCore
  - dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+
+## Executar
+ - donet run
