@@ -65,4 +65,4 @@ Isso garante **separação de responsabilidades**, facilitando manutenção e es
  - dotnet add package Microsoft.EntityFrameworkCore.Sqlite
 
 ## Executar
- - donet run
+ - dotnet run
