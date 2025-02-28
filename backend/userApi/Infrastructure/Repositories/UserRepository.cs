@@ -14,4 +14,9 @@ public class UserRepository : IUserRepository
     }
 
     public User? GetById(int id) => _context.Users.Find(id);
+
+    public List<User>? ListAll() 
+    {
+        return _context.Users?.ToList() ?? new List<User>();
+    }
 }

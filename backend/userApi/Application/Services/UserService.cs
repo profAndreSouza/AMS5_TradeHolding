@@ -19,4 +19,18 @@ public class UserService : IUserService
         var user = _userRepository.GetById(id);
         return user != null ? new UserDTO { Name = user.Name, Email = user.Email } : null;
     }
+
+    public UserIdDTO[] GetAllUsers()
+{
+    var users = _userRepository.ListAll();
+    var userDTOs = new List<UserIdDTO>();
+
+    foreach (var user in users)
+    {
+        userDTOs.Add(new UserIdDTO { Id = user.Id, Name = user.Name, Email = user.Email });
+    }
+
+    return userDTOs.ToArray();
+}
+
 }

@@ -18,6 +18,13 @@ public class UserController : ControllerBase
         return Ok(result);
     }
 
+    [HttpGet]
+    public IActionResult GetAllUsers()
+    {
+        var users = _userService.GetAllUsers();
+        return Ok(users);
+    }
+
     [HttpGet("{id}")]
     public IActionResult GetUserDetails(int id)
     {
