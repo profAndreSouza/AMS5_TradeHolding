@@ -63,6 +63,13 @@ Isso garante **separação de responsabilidades**, facilitando manutenção e es
  - dotnet add package Swashbuckle.AspNetCore 
  - dotnet add package Microsoft.EntityFrameworkCore
  - dotnet add package Microsoft.EntityFrameworkCore.Sqlite
+ - dotnet add package Microsoft.EntityFrameworkCore.Design
+
 
 ## Executar
  - dotnet run
+
+
+## Migrar o banco
+ - dotnet ef migrations add InitialCreate
+ - dotnet ef database update

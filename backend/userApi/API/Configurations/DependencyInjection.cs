@@ -7,7 +7,7 @@ public static class DependencyInjection
         services.AddScoped<IUserRepository, UserRepository>();
         services.AddScoped<IUserService, UserService>();
         services.AddDbContext<UserDbContext>(options =>
-            options.UseSqlite("Data Source=userdb.sqlite"));
+            options.UseSqlite("Data Source=Infrastructure/Data/userdb.sqlite"));
         return services;
     }
 }
