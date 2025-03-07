@@ -9,17 +9,28 @@ public class UserService : IUserService
 
      public UserDTO RegisterUser(UserDTO userDto)
     {
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+
         var user = new User 
         {
             Name = userDto.Name, 
             Email = userDto.Email, 
             Phone = userDto.Phone,
             Address = userDto.Address,
-            Password = userDto.Password,
+            Password = hashedPassword,
             Photo = userDto.Photo
         };
         _userRepository.Add(user);
-        return userDto;
+
+        return new UserDTO
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Phone = user.Phone,
+            Address = user.Address,
+            Password = user.Password,
+            Photo = user.Photo
+        };
     }
 
     public UserDTO? GetUserDetails(int id)
@@ -40,6 +51,7 @@ public class UserService : IUserService
     {
         return _userRepository.GetAll().Select(user => new UserDTO
         {
+            Id = user.Id,
             Name = user.Name,
             Email = user.Email,
             Phone = user.Phone,
@@ -51,6 +63,7 @@ public class UserService : IUserService
 
     public UserDTO? UpdateUser(int id, UserDTO userDto)
     {
+        var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
         var user = _userRepository.GetById(id);
         if (user == null) return null;
         
@@ -58,11 +71,20 @@ public class UserService : IUserService
         user.Email = userDto.Email;
         user.Phone = userDto.Phone;
         user.Address = userDto.Address;
-        user.Password = userDto.Password;
+        user.Password = hashedPassword;
         user.Photo = userDto.Photo;
         
         _userRepository.Update(user);
-        return userDto;
+        
+        return new UserDTO
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Phone = user.Phone,
+            Address = user.Address,
+            Password = user.Password,
+            Photo = user.Photo
+        };
     }
 
     public bool DeleteUser(int id)
