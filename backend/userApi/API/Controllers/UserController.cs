@@ -11,11 +11,18 @@ public class UserController : ControllerBase
         _userService = userService;
     }
 
-    [HttpPost]
+     [HttpPost]
     public IActionResult RegisterUser(UserDTO userDto)
     {
         var result = _userService.RegisterUser(userDto);
         return Ok(result);
+    }
+
+    [HttpGet("{id}")]
+    public IActionResult GetUserDetails(int id)
+    {
+        var user = _userService.GetUserDetails(id);
+        return user != null ? Ok(user) : NotFound();
     }
 
     [HttpGet]
@@ -25,10 +32,17 @@ public class UserController : ControllerBase
         return Ok(users);
     }
 
-    [HttpGet("{id}")]
-    public IActionResult GetUserDetails(int id)
+    [HttpPut("{id}")]
+    public IActionResult UpdateUser(int id, UserDTO userDto)
     {
-        var user = _userService.GetUserDetails(id);
-        return user != null ? Ok(user) : NotFound();
+        var updatedUser = _userService.UpdateUser(id, userDto);
+        return updatedUser != null ? Ok(updatedUser) : NotFound();
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult DeleteUser(int id)
+    {
+        var result = _userService.DeleteUser(id);
+        return result ? NoContent() : NotFound();
     }
 }

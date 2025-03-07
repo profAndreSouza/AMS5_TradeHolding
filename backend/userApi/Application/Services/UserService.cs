@@ -7,9 +7,17 @@ public class UserService : IUserService
         _userRepository = userRepository;
     }
 
-    public UserDTO RegisterUser(UserDTO userDto)
+     public UserDTO RegisterUser(UserDTO userDto)
     {
-        var user = new User { Name = userDto.Name, Email = userDto.Email };
+        var user = new User 
+        {
+            Name = userDto.Name, 
+            Email = userDto.Email, 
+            Phone = userDto.Phone,
+            Address = userDto.Address,
+            Password = userDto.Password,
+            Photo = userDto.Photo
+        };
         _userRepository.Add(user);
         return userDto;
     }
@@ -17,20 +25,52 @@ public class UserService : IUserService
     public UserDTO? GetUserDetails(int id)
     {
         var user = _userRepository.GetById(id);
-        return user != null ? new UserDTO { Name = user.Name, Email = user.Email } : null;
+        return user != null ? new UserDTO 
+        { 
+            Name = user.Name, 
+            Email = user.Email,
+            Phone = user.Phone,
+            Address = user.Address,
+            Password = user.Password,
+            Photo = user.Photo
+        } : null;
     }
 
-    public UserIdDTO[] GetAllUsers()
-{
-    var users = _userRepository.ListAll();
-    var userDTOs = new List<UserIdDTO>();
-
-    foreach (var user in users)
+    public List<UserDTO> GetAllUsers()
     {
-        userDTOs.Add(new UserIdDTO { Id = user.Id, Name = user.Name, Email = user.Email });
+        return _userRepository.GetAll().Select(user => new UserDTO
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Phone = user.Phone,
+            Address = user.Address,
+            Password = user.Password,
+            Photo = user.Photo
+        }).ToList();
     }
 
-    return userDTOs.ToArray();
-}
+    public UserDTO? UpdateUser(int id, UserDTO userDto)
+    {
+        var user = _userRepository.GetById(id);
+        if (user == null) return null;
+        
+        user.Name = userDto.Name;
+        user.Email = userDto.Email;
+        user.Phone = userDto.Phone;
+        user.Address = userDto.Address;
+        user.Password = userDto.Password;
+        user.Photo = userDto.Photo;
+        
+        _userRepository.Update(user);
+        return userDto;
+    }
+
+    public bool DeleteUser(int id)
+    {
+        var user = _userRepository.GetById(id);
+        if (user == null) return false;
+        _userRepository.Delete(id);
+        return true;
+    }
 
 }
