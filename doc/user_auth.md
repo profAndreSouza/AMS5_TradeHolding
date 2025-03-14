@@ -2,5 +2,12 @@
 dotnet add package BCrypt.Net-Next
 
 
-# Em service, ao mapear UserDTO para User, use a senha criptografada
+Em service, ao mapear UserDTO para User, use a senha criptografada
+
+``
 var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
+``
+
+## Autenticação
+dotnet add package Microsoft.AspNetCore.Authentication.JwtBearer
+

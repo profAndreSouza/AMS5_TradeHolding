@@ -148,3 +148,11 @@ C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\tr\Microsof
 C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\zh-Hans\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\zh-Hant\Microsoft.CodeAnalysis.Workspaces.MSBuild.BuildHost.resources.dll
 C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\BCrypt.Net-Next.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.Abstractions.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.Logging.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\Microsoft.IdentityModel.Tokens.dll
+C:\projects\FATEC\AMS5_TradeHolding\backend\userApi\bin\Debug\net9.0\System.IdentityModel.Tokens.Jwt.dll

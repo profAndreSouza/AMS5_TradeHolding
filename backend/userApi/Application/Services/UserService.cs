@@ -95,4 +95,22 @@ public class UserService : IUserService
         return true;
     }
 
+
+
+    public UserDTO? ValidateUser(string email, string password)
+    {
+        var user = _userRepository.GetByEmail(email);
+        if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+            return null;
+
+        return new UserDTO
+        {
+            Name = user.Name,
+            Email = user.Email,
+            Phone = user.Phone,
+            Address = user.Address,
+            Photo = user.Photo
+        };
+    }
+
 }
