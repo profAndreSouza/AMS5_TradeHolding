@@ -8,7 +8,7 @@ export interface User {
     photo: string;
 }
 
-const fakeUser: User = {
+const fakeUsers: User[] = [{
     id: 1,
     name: "João da Silva",
     email: "joao@silva.com",
@@ -16,11 +16,19 @@ const fakeUser: User = {
     address: "Rua da Bromélias, 199",
     password: "senhaHashed",
     photo: "user.png"
-}
+}, {
+    id: 2,
+    name: "José da Silva",
+    email: "joao@silva.com",
+    phone: "(15)9998877-6655",
+    address: "Rua da Bromélias, 199",
+    password: "senhaHashed",
+    photo: "user.png"
+}]
 
 const userService = {
     async getUsers() : Promise<User[]> {
-        return [fakeUser]
+        return fakeUsers
     }
 }
 

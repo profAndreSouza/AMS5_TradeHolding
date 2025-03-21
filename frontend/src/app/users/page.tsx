@@ -1,3 +1,4 @@
+"use client"
 import { useEffect, useState } from "react";
 import userService, {User} from "@/services/userService";
 
