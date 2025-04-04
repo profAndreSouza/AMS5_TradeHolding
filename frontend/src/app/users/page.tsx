@@ -4,14 +4,15 @@ import userService, {User} from "@/services/userService";
 
 export default function UsersPage() {
     const [users, setUsers] = useState<User[]>([]);
+    const [error, setError] = useState<String>("");
 
     useEffect(() => {
         async function fetchUsers() {
             try {
-                const data = await userService.getUsers();
+                const data = await userService.getAll();
                 setUsers(data);
-            } catch (error) {
-                console.log("Erro ao buscar usuários", error);
+            } catch (err) {
+                setError(`Erro ao buscar usuários: ${err}`);
             }
         }
         fetchUsers();
@@ -20,6 +21,7 @@ export default function UsersPage() {
     return (
         <div>
             <h1>Lista de Usuários</h1>
+            <p>{error}</p>
             <ul>
                 {users.map((user) => (
                     <li key={user.id}>

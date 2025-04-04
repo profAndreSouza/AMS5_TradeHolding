@@ -1,3 +1,6 @@
+import axios from "axios";
+import { userAPI } from "./api";
+
 export interface User {
     id?: number;
     name: string;
@@ -8,28 +11,19 @@ export interface User {
     photo: string;
 }
 
-const fakeUsers: User[] = [{
-    id: 1,
-    name: "João da Silva",
-    email: "joao@silva.com",
-    phone: "(15)9998877-6655",
-    address: "Rua da Bromélias, 199",
-    password: "senhaHashed",
-    photo: "user.png"
-}, {
-    id: 2,
-    name: "José da Silva",
-    email: "joao@silva.com",
-    phone: "(15)9998877-6655",
-    address: "Rua da Bromélias, 199",
-    password: "senhaHashed",
-    photo: "user.png"
-}]
-
 const userService = {
-    async getUsers() : Promise<User[]> {
-        return fakeUsers
+
+    async getAll(): Promise<User[]> {
+        const header = {
+            headers: {
+                'Accept': 'application/json',
+                'Access-Control-Allow-Origin': "*"
+            }
+        }
+        const response = await axios.get(userAPI.getAll(), header);
+        return response.data;
     }
+
 }
 
 export default userService;
