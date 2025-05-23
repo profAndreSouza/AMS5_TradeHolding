@@ -25,7 +25,14 @@ namespace CurrencyAPI.API.Controllers
                 Id = c.Id,
                 Symbol = c.Symbol,
                 Name = c.Name,
-                Backing = c.Backing
+                Backing = c.Backing,
+                Histories = c.Histories.Select(h => new HistoryDto
+                {
+                    Id = h.Id,
+                    CurrencyId = h.CurrencyId,
+                    Price = h.Price,
+                    Date = h.Date
+                }).ToList()
             });
 
             return Ok(result);

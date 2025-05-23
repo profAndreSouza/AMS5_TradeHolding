@@ -1,6 +1,3 @@
-@currencyApi_HostAddress = http://localhost:5225
-
-GET {{currencyApi_HostAddress}}/weatherforecast/
-Accept: application/json
+@currencyApi_HostAddress = http://localhost:5295
 
 ###
