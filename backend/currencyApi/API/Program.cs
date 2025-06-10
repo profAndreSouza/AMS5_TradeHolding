@@ -1,5 +1,6 @@
 using CurrencyAPI.API.Extensions;
 using CurrencyAPI.Infrastructure;
+using CurrencyAPI.Infrastructure.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 var configuration = builder.Configuration;

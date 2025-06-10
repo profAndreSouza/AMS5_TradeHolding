@@ -5,6 +5,7 @@ using CurrencyAPI.Application.Services;
 using CurrencyAPI.Domain.Interfaces;
 using CurrencyAPI.Infrastructure.Repositories;
 using CurrencyAPI.Infrastructure.Data;
+using CurrencyAPI.Infrastructure.Services;
 
 namespace CurrencyAPI.Infrastructure
 {
@@ -23,6 +24,9 @@ namespace CurrencyAPI.Infrastructure
             // EF Core DbContext
             services.AddDbContext<AppDbContext>(options =>
                 options.UseSqlite("Data Source=Infrastructure/Data/currencydb.sqlite"));
+
+            services.AddHttpClient(); // Necessário para IHttpClientFactory
+            services.AddHostedService<ExternalApiWorker>(); // Adiciona o worker
 
             return services;
         }
