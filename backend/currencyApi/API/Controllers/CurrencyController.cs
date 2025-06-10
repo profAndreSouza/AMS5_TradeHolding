@@ -88,5 +88,25 @@ namespace CurrencyAPI.API.Controllers
             await _service.DeleteAsync(id);
             return NoContent();
         }
+
+         // GET api/currencies/{id}/history?start=2023-01-01&end=2023-01-31
+        [HttpGet("{id}/history")]
+        public async Task<IActionResult> GetHistory(Guid id, DateTime? start, DateTime? end)
+        {
+            var exists = await _service.GetByIdAsync(id);
+            if (exists == null)
+                return NotFound();
+
+            var history = await _service.GetHistoryAsync(id, start, end);
+            return Ok(history);
+        }
+
+        // GET api/currencies/convert?from=USD&to=EUR&amount=100
+        [HttpGet("convert")]
+        public async Task<IActionResult> Convert(string from, string to, decimal amount)
+        {
+            // lógica de conversão
+            return Ok();
+        }
     }
 }

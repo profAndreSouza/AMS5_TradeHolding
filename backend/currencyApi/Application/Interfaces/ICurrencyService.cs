@@ -13,5 +13,7 @@ namespace CurrencyAPI.Application.Interfaces
         Task AddAsync(Currency currency);
         Task UpdateAsync(Currency currency);
         Task DeleteAsync(Guid id);
+        Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end);
+
     }
 }

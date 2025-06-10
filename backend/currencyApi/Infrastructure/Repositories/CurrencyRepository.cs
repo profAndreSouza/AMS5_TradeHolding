@@ -64,5 +64,19 @@ namespace CurrencyAPI.Infrastructure.Repositories
         {
             return await _context.Currencies.AnyAsync(c => c.Id == id);
         }
+        
+        public async Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end)
+        {
+            var query = _context.Histories
+                .Where(h => h.CurrencyId == currencyId);
+
+            if (start.HasValue)
+                query = query.Where(h => h.Date >= start.Value);
+
+            if (end.HasValue)
+                query = query.Where(h => h.Date <= end.Value);
+
+            return await query.OrderBy(h => h.Date).ToListAsync();
+        }
     }
 }

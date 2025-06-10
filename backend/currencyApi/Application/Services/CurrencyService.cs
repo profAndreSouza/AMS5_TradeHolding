@@ -46,5 +46,11 @@ namespace CurrencyAPI.Application.Services
         {
             await _repository.DeleteAsync(id);
         }
+
+        public async Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end)
+        {
+            return await _repository.GetHistoryAsync(currencyId, start, end);
+        }
+
     }
 }

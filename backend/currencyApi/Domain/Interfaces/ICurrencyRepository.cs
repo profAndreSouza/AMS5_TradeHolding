@@ -14,5 +14,7 @@ namespace CurrencyAPI.Domain.Interfaces
         Task UpdateAsync(Currency currency);
         Task DeleteAsync(Guid id);
         Task<bool> ExistsAsync(Guid id);
+        Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end);
+
     }
 }
