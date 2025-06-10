@@ -16,6 +16,10 @@ namespace CurrencyAPI.Application.Services
             _repository = repository;
         }
 
+        public async Task<IEnumerable<History>> GetAllAsync()
+        {
+            return await _repository.GetAllAsync();
+        }
         public async Task<IEnumerable<History>> GetByCurrencyIdAsync(Guid currencyId)
         {
             return await _repository.GetByCurrencyIdAsync(currencyId);

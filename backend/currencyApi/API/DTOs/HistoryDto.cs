@@ -1,6 +1,6 @@
 using System;
 
-namespace CurrencyAPI.Application.DTOs
+namespace CurrencyAPI.API.DTOs
 {
     public class HistoryDto
     {

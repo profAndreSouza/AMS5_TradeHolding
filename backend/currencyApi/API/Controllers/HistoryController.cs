@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using CurrencyAPI.Application.Interfaces;
-using CurrencyAPI.Application.DTOs;
+using CurrencyAPI.API.DTOs;
 using CurrencyAPI.Domain.Entities;
 
 namespace CurrencyAPI.API.Controllers
@@ -14,6 +14,21 @@ namespace CurrencyAPI.API.Controllers
         public HistoryController(IHistoryService service)
         {
             _service = service;
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAll()
+        {
+            var histories = await _service.GetAllAsync();
+            var result = histories.Select(h => new HistoryDto
+            {
+                Id = h.Id,
+                CurrencyId = h.CurrencyId,
+                Price = h.Price,
+                Date = h.Date
+            });
+
+            return Ok(result);
         }
 
         [HttpGet("{currencyId:guid}")]

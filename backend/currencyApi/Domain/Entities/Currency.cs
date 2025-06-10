@@ -9,17 +9,19 @@ namespace CurrencyAPI.Domain.Entities
         public string Symbol { get; private set; }
         public string Name { get; private set; }
         public string Backing { get; private set; }
+        public bool Reverse { get; private set; } = false;
 
         // Relacionamento: 1 Currency tem N Histories
         private readonly List<History> _histories = new();
         public IReadOnlyCollection<History> Histories => _histories.AsReadOnly();
 
-        public Currency(string symbol, string name, string backing)
+        public Currency(string symbol, string name, string backing, bool reverse = false)
         {
             Id = Guid.NewGuid();
             SetSymbol(symbol);
             SetName(name);
             SetBacking(backing);
+            SetReverse(reverse);
         }
 
         public void AddHistory(History history)
@@ -55,6 +57,11 @@ namespace CurrencyAPI.Domain.Entities
                 throw new ArgumentException("Backing is required.");
 
             Backing = backing.ToUpper();
+        }
+
+        public void SetReverse(bool reverse)
+        {
+            Reverse = reverse;
         }
     }
 }
