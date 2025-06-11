@@ -5,6 +5,7 @@ using Microsoft.EntityFrameworkCore;
 using CurrencyAPI.Domain.Entities;
 using CurrencyAPI.Domain.Interfaces;
 using CurrencyAPI.Infrastructure.Data;
+using CurrencyAPI.API.DTOs;
 
 namespace CurrencyAPI.Infrastructure.Repositories
 {
@@ -64,7 +65,7 @@ namespace CurrencyAPI.Infrastructure.Repositories
         {
             return await _context.Currencies.AnyAsync(c => c.Id == id);
         }
-        
+
         public async Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end)
         {
             var query = _context.Histories
@@ -78,5 +79,31 @@ namespace CurrencyAPI.Infrastructure.Repositories
 
             return await query.OrderBy(h => h.Date).ToListAsync();
         }
+        
+        public async Task<CurrencyWithLastPriceDto?> GetLastPriceBySymbolAsync(string symbol)
+        {
+            var currency = await _context.Currencies
+                .Where(c => c.Symbol == symbol.ToUpper())
+                .Select(c => new CurrencyWithLastPriceDto
+                {
+                    Id = c.Id,
+                    Symbol = c.Symbol,
+                    Name = c.Name,
+                    Backing = c.Backing,
+                    Reverse = c.Reverse,
+                    LastPrice = c.Histories
+                        .OrderByDescending(h => h.Date)
+                        .Select(h => h.Price)
+                        .FirstOrDefault(),
+                    LastPriceDate = c.Histories
+                        .OrderByDescending(h => h.Date)
+                        .Select(h => h.Date)
+                        .FirstOrDefault()
+                })
+                .FirstOrDefaultAsync();
+
+            return currency;
+        }
+
     }
 }

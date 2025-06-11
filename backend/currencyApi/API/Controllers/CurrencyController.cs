@@ -105,8 +105,38 @@ namespace CurrencyAPI.API.Controllers
         [HttpGet("convert")]
         public async Task<IActionResult> Convert(string from, string to, decimal amount)
         {
-            // lógica de conversão
-            return Ok();
+            var currencyFrom = await _service.GetLastPriceBySymbolAsync(from);
+            var currencyTo = await _service.GetLastPriceBySymbolAsync(to);
+            decimal conversionRate = 0;
+
+            if (currencyFrom.Backing == currencyTo.Backing)
+            {
+                decimal valueFrom = currencyFrom.Symbol == currencyFrom.Backing
+                    ? 1 : currencyFrom.Reverse
+                        ? 1 / currencyFrom.LastPrice.Value
+                        : currencyFrom.LastPrice.Value;
+
+                decimal valueTo = currencyTo.Symbol == currencyTo.Backing
+                    ? 1 : currencyTo.Reverse
+                        ? 1 / currencyTo.LastPrice.Value
+                        : currencyTo.LastPrice.Value;
+
+                conversionRate = valueFrom / valueTo;
+            }
+
+            decimal value = amount * conversionRate;
+
+            var ret = new
+            {
+                From = currencyFrom,
+                To = currencyTo,
+                Amount = amount,
+                Rate = conversionRate,
+                Value = value,
+            };
+
+
+            return Ok(ret);
         }
     }
 }

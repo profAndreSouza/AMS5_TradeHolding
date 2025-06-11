@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using CurrencyAPI.Application.Interfaces;
 using CurrencyAPI.Domain.Entities;
 using CurrencyAPI.Domain.Interfaces;
+using CurrencyAPI.API.DTOs;
 
 namespace CurrencyAPI.Application.Services
 {
@@ -51,6 +52,12 @@ namespace CurrencyAPI.Application.Services
         {
             return await _repository.GetHistoryAsync(currencyId, start, end);
         }
+
+        public async Task<CurrencyWithLastPriceDto?> GetLastPriceBySymbolAsync(string symbol)
+        {
+            return await _repository.GetLastPriceBySymbolAsync(symbol);
+        }
+
 
     }
 }
