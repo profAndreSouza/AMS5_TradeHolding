@@ -1,9 +1,9 @@
 public interface IUserRepository
 {
      void Add(User user);
-    User? GetById(int id);
+    User? GetById(Guid id);
     List<User> GetAll();
     void Update(User user);
-    void Delete(int id);
+    void Delete(Guid id);
     User? GetByEmail(string email);
 }

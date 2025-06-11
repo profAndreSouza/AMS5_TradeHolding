@@ -12,7 +12,7 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
     }
 
-    public User? GetById(int id) => _context.Users.Find(id);
+    public User? GetById(Guid id) => _context.Users.Find(id);
 
     public List<User> GetAll() => _context.Users.ToList();
 
@@ -22,7 +22,7 @@ public class UserRepository : IUserRepository
         _context.SaveChanges();
     }
 
-    public void Delete(int id)
+    public void Delete(Guid id)
     {
         var user = _context.Users.Find(id);
         if (user != null)
