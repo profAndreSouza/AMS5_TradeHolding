@@ -58,6 +58,17 @@ namespace CurrencyAPI.Application.Services
             return await _repository.GetLastPriceBySymbolAsync(symbol);
         }
 
+        public async Task<IEnumerable<CurrencySummaryDto>> GetCurrencySummariesAsync()
+        {
+            return await _repository.GetCurrencySummariesAsync();
+        }
+
+        public async Task<IEnumerable<ChartPointDto>> GetChartDataAsync(Guid currencyId, int quantity)
+        {
+            return await _repository.GetChartDataAsync(currencyId, quantity);
+        }
+
+
 
     }
 }

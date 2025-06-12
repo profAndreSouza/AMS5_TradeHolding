@@ -89,7 +89,7 @@ namespace CurrencyAPI.API.Controllers
             return NoContent();
         }
 
-         // GET api/currencies/{id}/history?start=2023-01-01&end=2023-01-31
+        // GET api/currencies/{id}/history?start=2023-01-01&end=2023-01-31
         [HttpGet("{id}/history")]
         public async Task<IActionResult> GetHistory(Guid id, DateTime? start, DateTime? end)
         {
@@ -138,5 +138,21 @@ namespace CurrencyAPI.API.Controllers
 
             return Ok(ret);
         }
+
+        [HttpGet("summary")]
+        public async Task<IActionResult> GetSummaries()
+        {
+            var result = await _service.GetCurrencySummariesAsync();
+            return Ok(result);
+        }
+        
+        [HttpGet("{id}/chart")]
+        public async Task<IActionResult> GetChart(Guid id, int quantity)
+        {
+            var chartData = await _service.GetChartDataAsync(id, quantity);
+            return Ok(chartData);
+        }
+
+
     }
 }

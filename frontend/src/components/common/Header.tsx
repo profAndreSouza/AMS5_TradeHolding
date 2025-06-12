@@ -13,6 +13,7 @@ const Header: React.FC<HeaderProps> = ({siteName="Trade Holding AMS", pageName})
                 <nav className="hidden lg:flex items-center gap-6">
                 <a href="/compre" className="text-white hover:text-accent">Compre Cripto</a>
                 <a href="/mercados" className="text-white hover:text-accent">Mercados</a>
+                <a href="/mercados" className="text-white hover:text-accent">Wallets</a>
                 <div className="relative group">
                     <button className="text-white hover:text-accent flex items-center gap-1">
                     Trade

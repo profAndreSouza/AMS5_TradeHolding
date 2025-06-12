@@ -1,25 +1,40 @@
 'use client';
+
+import { useEffect, useState } from 'react';
 import Header from '../components/common/Header';
 import CryptoTable from '../components/home/CryptoTable';
 import CryptoChart from '../components/home/CryptoChart';
-
-  const coins = [
-    { id: 'BTC', name: 'Bitcoin', price: 67000, change: 2.3 },
-    { id: 'ETH', name: 'Ethereum', price: 3700, change: -1.2 },
-    { id: 'BNB', name: 'Binance Coin', price: 580, change: 0.5 },
-    { id: 'ADA', name: 'Cardano', price: 0.55, change: -0.8 },
-    { id: 'SOL', name: 'Solana', price: 150, change: 4.1 },
-  ];
-
-  const chartData = [
-    { time: '09:00', value: 66000 },
-    { time: '10:00', value: 66500 },
-    { time: '11:00', value: 67000 },
-    { time: '12:00', value: 67500 },
-    { time: '13:00', value: 67300 },
-  ];
+import { getCoins, Coin } from '../services/cryptoCoinsService';
+import { getChartData, ChartPoint } from '../services/cryptoChartService';
 
 export default function Home() {
+
+  const [coins, setCoins] = useState<Coin[]>([]);
+  const [chartData, setChartData] = useState<ChartPoint[]>([]);
+  const [selectedCoinId, setSelectedCoinId] = useState<string>('');
+  const [selectedLimit, setSelectedLimit] = useState<number>(10);
+
+  useEffect(() => {
+    const fetchCoins  = async () => {
+      const coinsData = await getCoins();
+      setCoins(coinsData);
+      if (coinsData.length > 0) {
+        setSelectedCoinId(coinsData[0].id);
+      }
+    };
+
+    fetchCoins ();
+  }, []);
+
+  useEffect(() => {
+    if (selectedCoinId) {
+      const fetchChart = async () => {
+        const data = await getChartData(selectedCoinId, selectedLimit);
+        setChartData(data);
+      };
+      fetchChart();
+    }
+  }, [selectedCoinId, selectedLimit]);
 
   return (
     <>
@@ -40,8 +55,14 @@ export default function Home() {
             <CryptoTable coins={coins} />
           </div>
           <div className="w-2/3 h-full">
-            <CryptoChart data={chartData} coinName={coins[0].name} />
-          </div>
+        <CryptoChart
+          data={chartData}
+          coinName={coins.find((c) => c.id === selectedCoinId)?.name || 'Carregando...'}
+          coins={coins}
+          onCoinChange={setSelectedCoinId}
+          onLimitChange={setSelectedLimit}
+        />
+      </div>
         </section>
       </main>
     </>

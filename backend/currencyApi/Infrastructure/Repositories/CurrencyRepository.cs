@@ -79,7 +79,7 @@ namespace CurrencyAPI.Infrastructure.Repositories
 
             return await query.OrderBy(h => h.Date).ToListAsync();
         }
-        
+
         public async Task<CurrencyWithLastPriceDto?> GetLastPriceBySymbolAsync(string symbol)
         {
             var currency = await _context.Currencies
@@ -105,5 +105,72 @@ namespace CurrencyAPI.Infrastructure.Repositories
             return currency;
         }
 
+        public async Task<IEnumerable<CurrencySummaryDto>> GetCurrencySummariesAsync()
+        {
+            var currencies = await _context.Currencies.ToListAsync();
+            var summaries = new List<CurrencySummaryDto>();
+            var thirtyDaysAgo = DateTime.UtcNow.AddDays(-30);
+
+            foreach (var currency in currencies)
+            {
+                var lastPrice = await _context.Histories
+                    .Where(h => h.CurrencyId == currency.Id)
+                    .OrderByDescending(h => h.Date)
+                    .Select(h => h.Price)
+                    .FirstOrDefaultAsync();
+
+                if (lastPrice == 0) continue;
+
+                // Tenta pegar a cotação de 30 dias atrás
+                var oldPrice = await _context.Histories
+                    .Where(h => h.CurrencyId == currency.Id && h.Date <= thirtyDaysAgo)
+                    .OrderByDescending(h => h.Date)
+                    .Select(h => h.Price)
+                    .FirstOrDefaultAsync();
+
+                // Se não encontrou, pega a mais antiga disponível
+                if (oldPrice == 0)
+                {
+                    oldPrice = await _context.Histories
+                        .Where(h => h.CurrencyId == currency.Id)
+                        .OrderBy(h => h.Date)
+                        .Select(h => h.Price)
+                        .FirstOrDefaultAsync();
+                }
+
+                if (oldPrice == 0) continue;
+
+                decimal change = ((lastPrice - oldPrice) / oldPrice) * 100;
+
+                summaries.Add(new CurrencySummaryDto
+                {
+                    Id = currency.Id,
+                    Symbol = currency.Symbol,
+                    Name = currency.Name,
+                    Price = currency.Reverse ? Math.Round(1 / lastPrice, 4) : Math.Round(lastPrice, 4),
+                    Change = Math.Round(change, 2)
+                });
+            }
+
+            return summaries;
+        }
+
+        public async Task<IEnumerable<ChartPointDto>> GetChartDataAsync(Guid currencyId, int quantity)
+        {
+            return await _context.Histories
+                .Where(h => h.CurrencyId == currencyId)
+                .OrderByDescending(h => h.Date)
+                .Take(quantity)
+                .OrderBy(h => h.Date) // para exibir no gráfico da esquerda para direita
+                .Select(h => new ChartPointDto
+                {
+                    Time = h.Date.ToUniversalTime().ToString("o"), // ajusta para UTC-3
+                    Value = Math.Round(h.Price, 4)
+                })
+                .ToListAsync();
+        }
+
+
     }
+    
 }

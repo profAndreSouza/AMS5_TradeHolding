@@ -2,7 +2,7 @@
 import React from 'react';
 
 type Crypto = {
-  id: string;
+  symbol: string;
   name: string;
   price: number;
   change: number;
@@ -26,10 +26,10 @@ export default function CryptoTable({ coins }: Props) {
         </thead>
         <tbody>
           {coins.map((coin) => (
-            <tr key={coin.id} className="border-t border-gray-700">
+            <tr key={coin.symbol} className="border-t border-gray-700">
               <td className="p-2">
                 <img
-                  src={`/coin/${coin.id}.svg`}
+                  src={`/coin/${coin.symbol}.svg`}
                   alt={`${coin.name} icon`}
                   className="w-6 h-6"
                 />
@@ -39,6 +39,8 @@ export default function CryptoTable({ coins }: Props) {
                 {coin.price.toLocaleString('pt-BR', {
                   style: 'currency',
                   currency: 'USD',
+                  minimumFractionDigits: 4,
+                  maximumFractionDigits: 4,
                 })}
               </td>
               <td className={`p-2 ${coin.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>

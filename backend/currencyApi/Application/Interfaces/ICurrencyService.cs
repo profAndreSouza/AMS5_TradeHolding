@@ -16,7 +16,8 @@ namespace CurrencyAPI.Application.Interfaces
         Task DeleteAsync(Guid id);
         Task<IEnumerable<History>> GetHistoryAsync(Guid currencyId, DateTime? start, DateTime? end);
         Task<CurrencyWithLastPriceDto?> GetLastPriceBySymbolAsync(string symbol);
-
+        Task<IEnumerable<CurrencySummaryDto>> GetCurrencySummariesAsync();
+        Task<IEnumerable<ChartPointDto>> GetChartDataAsync(Guid currencyId, int quantity);
 
     }
 }
