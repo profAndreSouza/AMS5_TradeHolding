@@ -2,6 +2,12 @@
 
 import { useEffect, useState } from 'react';
 import { LineChart, Line, XAxis, YAxis, Tooltip, ResponsiveContainer } from 'recharts';
+import { Coin } from '../../services/cryptoCoinsService';
+
+type ChartPoint = {
+  time: string;
+  value: number;
+};
 
 type CryptoChartProps = {
   data: ChartPoint[];

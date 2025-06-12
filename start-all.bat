@@ -1,5 +1,5 @@
 @echo off
-echo Iniciando aplicações...
+echo Iniciando aplicacoes...
 
 REM Iniciar UserAPI
 start "UserAPI" cmd /k "cd backend\userapi && dotnet run"
@@ -10,5 +10,5 @@ start "CurrencyAPI" cmd /k "cd backend\currencyapi && dotnet watch run"
 REM Iniciar Frontend (React)
 start "Frontend" cmd /k "cd frontend && npm run dev"
 
-echo Todas as aplicações foram iniciadas em terminais separados.
+echo Todas as aplicacoes foram iniciadas em terminais separados.
 pause
