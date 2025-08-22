@@ -1,0 +1,6 @@
+@gatewayApi_HostAddress = http://localhost:5197
+
+GET {{gatewayApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
