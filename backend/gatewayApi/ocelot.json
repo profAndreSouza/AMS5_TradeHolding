@@ -1,16 +1,23 @@
 {
-    "Routes": [
-      {
-        "DownstreamPathTemplate": "/api/Currency",
-        "DownstreamScheme": "http",
-        "DownstreamHostAndPorts": [
-          {
-            "Host": "localhost",
-            "Port": 5002
-          }
-        ],
-        "UpstreamPathTemplate": "/currency",
-        "UpstreamHttpMethod": [ "GET", "POST" ]
+  "Routes": [
+    {
+      "DownstreamPathTemplate": "/api/Currency",
+      "DownstreamScheme": "http",
+      "DownstreamHostAndPorts": [
+        {
+          "Host": "localhost",
+          "Port": 5002
+        }
+      ],
+      "UpstreamPathTemplate": "/currency",
+      "UpstreamHttpMethod": [ "GET", "POST" ],
+      "AuthenticationOptions": {
+        "AuthenticationProviderKey": "AuthKey",
+        "AllowedScopes": []
       }
-    ]
+    }
+  ],
+  "GlobalConfiguration": {
+    "BaseUrl": "http://localhost:5000"
+  }
 }
