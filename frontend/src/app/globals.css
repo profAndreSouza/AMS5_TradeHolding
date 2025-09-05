@@ -4,15 +4,18 @@
 
 /* https://colorhunt.co/palette/27374d526d829db2bfdde6ed */
 @layer utilities {
-    .bg-primary { background-color: #27374D; }
-    .bg-secondary { background-color: #526D82; }
-    .bg-accent { background-color: #9DB2BF; }
-    .bg-light { background-color: #DDE6ED; }
-    .text-primary { color: #27374D; }
-    .text-secondary { color: #526D82; }
-    .text-accent { color: #9DB2BF; }
-    .text-light { color: #DDE6ED; }
+    .bg-primary   { background-color: #191919; } /* preto suave */
+    .bg-secondary { background-color: #2D4263; } /* azul acinzentado */
+    .bg-accent    { background-color: #C84B31; } /* vermelho-terra */
+    .bg-light     { background-color: #ECDBBA; } /* bege claro */
+
+    .text-primary   { color: #191919; }
+    .text-secondary { color: #2D4263; }
+    .text-accent    { color: #C84B31; }
+    .text-light     { color: #ECDBBA; }
 }
+
+
 
 @layer components {
     

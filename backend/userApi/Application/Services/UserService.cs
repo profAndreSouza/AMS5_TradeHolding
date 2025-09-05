@@ -33,7 +33,7 @@ public class UserService : IUserService
         };
     }
 
-    public UserDTO? GetUserDetails(int id)
+    public UserDTO? GetUserDetails(Guid id)
     {
         var user = _userRepository.GetById(id);
         return user != null ? new UserDTO 
@@ -61,7 +61,7 @@ public class UserService : IUserService
         }).ToList();
     }
 
-    public UserDTO? UpdateUser(int id, UserDTO userDto)
+    public UserDTO? UpdateUser(Guid id, UserDTO userDto)
     {
         var hashedPassword = BCrypt.Net.BCrypt.HashPassword(userDto.Password);
         var user = _userRepository.GetById(id);
@@ -87,7 +87,7 @@ public class UserService : IUserService
         };
     }
 
-    public bool DeleteUser(int id)
+    public bool DeleteUser(Guid id)
     {
         var user = _userRepository.GetById(id);
         if (user == null) return false;

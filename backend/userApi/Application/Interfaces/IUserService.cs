@@ -1,9 +1,9 @@
 public interface IUserService
 {
     UserDTO RegisterUser(UserDTO userDto);
-    UserDTO? GetUserDetails(int id);
+    UserDTO? GetUserDetails(Guid id);
     List<UserDTO> GetAllUsers();
-    UserDTO? UpdateUser(int id, UserDTO userDto);
-    bool DeleteUser(int id);
+    UserDTO? UpdateUser(Guid id, UserDTO userDto);
+    bool DeleteUser(Guid id);
     UserDTO? ValidateUser(string email, string password);
 }

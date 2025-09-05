@@ -6,6 +6,8 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.WebHost.UseUrls("http://localhost:5001");
+
 var configuration = builder.Configuration;
 var key = Encoding.ASCII.GetBytes(configuration["Jwt:Key"] ?? throw new ArgumentNullException("Jwt:Key is missing"));
 
