@@ -137,7 +137,7 @@ Usuário pergunta: “Qual meu saldo?”
 
 
 
-# **Comunicações Assíncronas (Eventos via RabbitMQ)**
+# **Comunicações Assíncronas (Eventos via BrokerAPI)**
 
 Aqui temos **eventos disparados** entre microserviços. Não há resposta imediata, mas **notificações** e **atualizações em tempo real**.
 
@@ -240,7 +240,7 @@ sequenceDiagram
     participant U as API User
     participant W as API Wallet
     participant C as API Currency
-    participant MQ as RabbitMQ
+    participant MQ as BrokerAPI
     participant CB as API Chatbot
 
     FE->>GW: POST /wallet/trade {from: BTC, to: USDT, amount: 1}
@@ -265,7 +265,7 @@ sequenceDiagram
     participant FE as Frontend (Chat UI)
     participant GW as API Gateway
     participant CB as API Chatbot
-    participant MQ as RabbitMQ
+    participant MQ as BrokerAPI
     participant W as API Wallet
     participant U as API User
 
@@ -288,7 +288,7 @@ sequenceDiagram
 
 # **Tabela Consolidada – Síncrono vs Assíncrono por API**
 
-| **API**          | **Chamadas Síncronas (REST/HTTP)**                                                           | **Chamadas Assíncronas (Eventos RabbitMQ)**                                                                                            |
+| **API**          | **Chamadas Síncronas (REST/HTTP)**                                                           | **Chamadas Assíncronas (Eventos BrokerAPI)**                                                                                            |
 | ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
 | **API User**     | `POST /user/login` → login e autenticação                                                    | `user.auth.success` → evento disparado após autenticação bem-sucedida                                                                  |
 | **API Wallet**   | `GET /wallet/balance` → consultar saldo<br>`POST /wallet/trade` → executar trade             | `wallet.deposit.success` → depósito concluído<br>`wallet.trade.success` → trade concluído                                              |
@@ -310,8 +310,8 @@ graph TD
         W -->|POST /wallet/trade| C
     end
 
-    subgraph Assincrono [Assíncrono - RabbitMQ]
-        U -->|user.auth.success| MQ[(RabbitMQ)]
+    subgraph Assincrono [Assíncrono - BrokerAPI]
+        U -->|user.auth.success| MQ[(BrokerAPI)]
         W -->|wallet.deposit.success| MQ
         W -->|wallet.trade.success| MQ
         C -->|currency.price.update| MQ
@@ -330,8 +330,8 @@ graph TD
 # **Resumo Final**
 
 * **Síncrono (REST/HTTP)** → usado em **requisições do frontend**: login, saldo, trade, chatbot.
-* **Assíncrono (RabbitMQ)** → usado em **eventos entre microserviços**: depósitos, trades, atualizações de preço.
+* **Assíncrono (BrokerAPI)** → usado em **eventos entre microserviços**: depósitos, trades, atualizações de preço.
 * Fluxos mistos:
 
   * **Trade** → começa síncrono, termina com evento assíncrono.
-  * **Depósito via Chatbot** → começa síncrono (mensagem), continua assíncrono (execução via RabbitMQ).
+  * **Depósito via Chatbot** → começa síncrono (mensagem), continua assíncrono (execução via BrokerAPI).
