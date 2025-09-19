@@ -296,37 +296,6 @@ sequenceDiagram
 | **API Chatbot**  | `POST /chatbot/message` → envio de mensagem do usuário, retorno imediato de resposta textual | `chatbot.wallet.deposit` → comando para depósito<br>Eventos de notificação para confirmar ações (ex: depósito concluído, alerta preço) |
 
 
-
-# **Visão Consolidada (Mermaid – Síncrono vs Assíncrono)**
-
-```mermaid
-graph TD
-
-    subgraph Sincrono [Síncrono - REST/HTTP]
-        FE[Frontend] -->|POST /user/login| U[API User]
-        FE -->|GET /wallet/balance| W[API Wallet]
-        FE -->|GET /currency/price| C[API Currency]
-        FE -->|POST /chatbot/message| CB[API Chatbot]
-        W -->|POST /wallet/trade| C
-    end
-
-    subgraph Assincrono [Assíncrono - BrokerAPI]
-        U -->|user.auth.success| MQ[(BrokerAPI)]
-        W -->|wallet.deposit.success| MQ
-        W -->|wallet.trade.success| MQ
-        C -->|currency.price.update| MQ
-        CB -->|chatbot.wallet.deposit| MQ
-
-        MQ --> U
-        MQ --> W
-        MQ --> C
-        MQ --> CB
-    end
-
-    FE -.->|Atualizações em tempo real| MQ
-```
-
-
 # **Resumo Final**
 
 * **Síncrono (REST/HTTP)** → usado em **requisições do frontend**: login, saldo, trade, chatbot.
