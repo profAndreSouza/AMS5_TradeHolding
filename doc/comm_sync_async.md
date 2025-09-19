@@ -2,7 +2,6 @@
 
 Essas chamadas são **request/response imediatas**, tipicamente do **Frontend → API Gateway → Microserviço**.
 
-
 ## 1. **Login (API User)**
 
 Usuário tenta logar → precisa de resposta imediata.
@@ -26,6 +25,7 @@ Usuário tenta logar → precisa de resposta imediata.
   "mfaType": "sms"
 }
 ```
+
 
 
 ## 2. **Consultar saldo total (API Wallet)**
@@ -54,6 +54,7 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI...
 ```
 
 
+
 ## 3. **Consulta de preço em tempo real (API Currency)**
 
 Usada na tela de **Trade**.
@@ -73,6 +74,7 @@ Authorization: Bearer <token>
   "timestamp": "2025-09-19T15:05:00Z"
 }
 ```
+
 
 
 ## 4. **Troca de ativos (API Wallet + API Currency)**
@@ -107,6 +109,7 @@ Usuário faz trade de **1 BTC → USDT**.
 ```
 
 
+
 ## 5. **Interação com o Chatbot (API Chatbot)**
 
 Usuário pergunta: “Qual meu saldo?”
@@ -133,19 +136,19 @@ Usuário pergunta: “Qual meu saldo?”
 ```
 
 
-# **Comunicações Assíncronas (Eventos via BrokerAPI)**
+
+# **Comunicações Assíncronas (Eventos via RabbitMQ)**
 
 Aqui temos **eventos disparados** entre microserviços. Não há resposta imediata, mas **notificações** e **atualizações em tempo real**.
 
-
 ## 1. **Usuário autenticado (API User → outros serviços)**
 
-Após login, API User publica evento para outros microserviços.
+Após login, API User publica evento.
 
 **Exchange:** `user.events`
 **Routing Key:** `user.auth.success`
 
-**Mensagem (JSON):**
+**Mensagem:**
 
 ```json
 {
@@ -160,6 +163,7 @@ Após login, API User publica evento para outros microserviços.
 ```
 
 
+
 ## 2. **Depósito realizado (API Wallet → API User + API Chatbot)**
 
 Usuário faz depósito fictício → Wallet dispara evento.
@@ -167,7 +171,7 @@ Usuário faz depósito fictício → Wallet dispara evento.
 **Exchange:** `wallet.events`
 **Routing Key:** `wallet.deposit.success`
 
-**Mensagem (JSON):**
+**Mensagem:**
 
 ```json
 {
@@ -181,10 +185,6 @@ Usuário faz depósito fictício → Wallet dispara evento.
 }
 ```
 
-→ Esse evento pode ser consumido por:
-
-* **API User** (para atualizar histórico do usuário).
-* **API Chatbot** (para notificar: “Depósito de \$500 concluído com sucesso”).
 
 
 ## 3. **Atualização de cotação (API Currency → API Wallet + Chatbot)**
@@ -194,7 +194,7 @@ API Currency recebe atualização do mercado → publica evento.
 **Exchange:** `currency.events`
 **Routing Key:** `currency.price.update`
 
-**Mensagem (JSON):**
+**Mensagem:**
 
 ```json
 {
@@ -205,10 +205,6 @@ API Currency recebe atualização do mercado → publica evento.
 }
 ```
 
-→ Esse evento pode ser consumido por:
-
-* **API Wallet** (para recalcular trades pendentes).
-* **API Chatbot** (para alertar usuário: “O preço do BTC subiu para \$27,800”).
 
 
 ## 4. **Interação do Chatbot (API Chatbot → outros serviços)**
@@ -218,7 +214,7 @@ Usuário pede via chat: “Depositar 200 USD”.
 **Exchange:** `chatbot.commands`
 **Routing Key:** `chatbot.wallet.deposit`
 
-**Mensagem (JSON):**
+**Mensagem:**
 
 ```json
 {
@@ -231,7 +227,7 @@ Usuário pede via chat: “Depositar 200 USD”.
 }
 ```
 
-→ Esse evento é consumido pela **API Wallet**, que executa o depósito e depois emite o evento de **deposit.success**.
+
 
 # **Fluxos de Comunicação**
 
@@ -254,7 +250,7 @@ sequenceDiagram
     W->>C: Consulta preço BTC-USD
     C-->>W: Retorna preço (27,500.40)
     W-->>GW: Retorna sucesso {tradeId, status: SUCCESS, newBalances}
-    GW-->>FE: Exibe saldo atualizado (REST síncrono)
+    GW-->>FE: Exibe saldo atualizado (REST)
 
     Note over W, MQ: Publica evento de trade concluído
     W->>MQ: {event: TRADE_SUCCESS, userId, assets, newBalances}
@@ -289,9 +285,53 @@ sequenceDiagram
 ```
 
 
-# **Resumo**
 
-* **Síncrono (REST/HTTP)** → usado em **requisições diretas do frontend**, como login, consultar saldo, executar trade, ou falar com o chatbot.
-* **Assíncrono (RabbitMQ)** → usado em **eventos internos entre microserviços**, garantindo consistência em tempo real e desacoplamento.
-* O **fluxo de trade** é majoritariamente **síncrono** (precisa de resposta imediata), mas termina com um evento **assíncrono** notificando saldo atualizado.
-* O **fluxo de depósito via chatbot** começa síncrono (mensagem do usuário), mas a execução real do depósito ocorre de forma **assíncrona via RabbitMQ**.
+# **Tabela Consolidada – Síncrono vs Assíncrono por API**
+
+| **API**          | **Chamadas Síncronas (REST/HTTP)**                                                           | **Chamadas Assíncronas (Eventos RabbitMQ)**                                                                                            |
+| ---------------- | -------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------- |
+| **API User**     | `POST /user/login` → login e autenticação                                                    | `user.auth.success` → evento disparado após autenticação bem-sucedida                                                                  |
+| **API Wallet**   | `GET /wallet/balance` → consultar saldo<br>`POST /wallet/trade` → executar trade             | `wallet.deposit.success` → depósito concluído<br>`wallet.trade.success` → trade concluído                                              |
+| **API Currency** | `GET /currency/price` → consulta preço em tempo real                                         | `currency.price.update` → atualização de cotação em tempo real                                                                         |
+| **API Chatbot**  | `POST /chatbot/message` → envio de mensagem do usuário, retorno imediato de resposta textual | `chatbot.wallet.deposit` → comando para depósito<br>Eventos de notificação para confirmar ações (ex: depósito concluído, alerta preço) |
+
+
+
+# **Visão Consolidada (Mermaid – Síncrono vs Assíncrono)**
+
+```mermaid
+graph TD
+
+    subgraph Sincrono [Síncrono - REST/HTTP]
+        FE[Frontend] -->|POST /user/login| U[API User]
+        FE -->|GET /wallet/balance| W[API Wallet]
+        FE -->|GET /currency/price| C[API Currency]
+        FE -->|POST /chatbot/message| CB[API Chatbot]
+        W -->|POST /wallet/trade| C
+    end
+
+    subgraph Assincrono [Assíncrono - RabbitMQ]
+        U -->|user.auth.success| MQ[(RabbitMQ)]
+        W -->|wallet.deposit.success| MQ
+        W -->|wallet.trade.success| MQ
+        C -->|currency.price.update| MQ
+        CB -->|chatbot.wallet.deposit| MQ
+
+        MQ --> U
+        MQ --> W
+        MQ --> C
+        MQ --> CB
+    end
+
+    FE -.->|Atualizações em tempo real| MQ
+```
+
+
+# **Resumo Final**
+
+* **Síncrono (REST/HTTP)** → usado em **requisições do frontend**: login, saldo, trade, chatbot.
+* **Assíncrono (RabbitMQ)** → usado em **eventos entre microserviços**: depósitos, trades, atualizações de preço.
+* Fluxos mistos:
+
+  * **Trade** → começa síncrono, termina com evento assíncrono.
+  * **Depósito via Chatbot** → começa síncrono (mensagem), continua assíncrono (execução via RabbitMQ).
