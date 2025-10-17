@@ -558,12 +558,6 @@ Após os diagramas, incluir uma seção descritiva com:
 * Versões e dependências mais relevantes.
 
 
-A **documentação em PDF** deverá ser criada pelo grupo e adicionada à **raiz do repositório**, com o nome padrão:
-
-```
-Documentacao_Tecnica_Projeto_Corretora.pdf
-```
-
 Ela servirá como **complemento visual e explicativo da documentação em Markdown**, sendo obrigatória para avaliação final.
 Todos os diagramas devem ser originais, elaborados pelo grupo (pode-se utilizar ferramentas como Draw.io, Lucidchart, PlantUML ou Mermaid).
 
