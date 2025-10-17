@@ -209,10 +209,6 @@ sequenceDiagram
 ```
 
 
-
-Segue a parte detalhada — itens **6 a 8** — em Markdown, pronta para ser adicionada ao documento `Documentacao_Final_Projeto_Corretora_Criptomoedas.md`. Mantive o tom técnico, sem ícones, e com exemplos resumidos quando relevantes.
-
-
 ## 6. Requisitos Funcionais e Não Funcionais (detalhado)
 
 ### 6.1 Requisitos Funcionais (RF)
