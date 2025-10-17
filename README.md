@@ -208,7 +208,6 @@ sequenceDiagram
     MQ-->>CB: Notifica sucesso
 ```
 
-
 ## 6. Requisitos Funcionais e Não Funcionais (detalhado)
 
 ### 6.1 Requisitos Funcionais (RF)
@@ -350,99 +349,13 @@ Cada RF está numerado para referência nas entregas e testes.
 ```
 
 
-## 7. Cronograma Resumido e Entregas Esperadas
+## 7. Definição do MVP (Produto Mínimo Viável) — critérios, escopo e checklist de aceitação
 
-A seguir há um cronograma consolidado com entregas cumulativas. Ajuste de datas conforme calendário da disciplina; o importante é respeitar a ordem e as entregas mínimas por sprint.
-
-### Estrutura de Sprints (sugestão)
-
-* **Sprint 0 (planejamento, 1 semana)**
-
-  * Definição de requisitos, divisão de epics/ tarefas no board (ex: GitHub Projects).
-  * Configuração do repositório monorepo ou repositórios por serviço.
-  * Entrega: README do repositório com arquitetura e backlog inicial.
-
-* **Sprint 1 (2 semanas)**
-
-  * Implementar `UserAPI` (cadastro, login JWT, hashing).
-  * Implementar frontend mínimo para cadastro/login.
-  * Entrega: `UserAPI` funcional + autenticação no frontend.
-
-* **Sprint 2 (2 semanas)**
-
-  * Implementar `WalletAPI` com consulta de saldo e depósito simulado.
-  * Integração frontend: exibir saldo e permitir depósito fictício.
-  * Entrega: `/wallet/balance`, `/wallet/deposit` e páginas correspondentes.
-
-* **Sprint 3 (2 semanas)**
-
-  * Implementar `CurrencyAPI` com endpoint de preços e histórico (dados simulados ou estáticos).
-  * Implementar lógica de `trade` no `WalletAPI` consultando `CurrencyAPI`.
-  * Entrega: funcionalidade de trade com fluxo síncrono.
-
-* **Sprint 4 (2 semanas)**
-
-  * Implementar `ChatbotAPI` (respostas simples e publicação de comandos).
-  * Integração assíncrona via RabbitMQ: publicar `wallet.deposit.success`, `wallet.trade.success`.
-  * Entrega: comandos do chatbot gerando eventos e alterando saldo via filas.
-
-* **Sprint 5 (1-2 semanas)**
-
-  * Polimento: testes básicos, validações, README por serviço, documentação de endpoints.
-  * Preparação para avaliação final (demo, slides, notas de entrega).
-  * Entrega: versão candidata ao MVP para demonstração.
-
-
-### Entregas parciais (por sprint) — checklists
-
-**Entrega Sprint 1 — UserAPI**
-
-* Código do serviço no repo.
-* README do serviço com instruções de execução.
-* Endpoints: `POST /user/register`, `POST /user/login`.
-* Teste manual documentado (ex.: POST via Postman/ curl).
-
-**Entrega Sprint 2 — WalletAPI**
-
-* Endpoints: `GET /wallet/balance`, `POST /wallet/deposit`.
-* Integração frontend: página de saldo e botão de depósito.
-* Publicação de evento `wallet.deposit.success` (pelo menos em log para avaliação).
-
-**Entrega Sprint 3 — CurrencyAPI + Trade**
-
-* Endpoints de preço/histórico.
-* `POST /wallet/trade` com verificação de saldo e consulta de preço.
-* Registro de trade em persistência simples (arquivo ou base).
-
-**Entrega Sprint 4 — Chatbot + Mensageria**
-
-* Chat UI simples no frontend (campo de mensagem).
-* `POST /chatbot/message` respondendo consultas e publicando comandos.
-* Integração com RabbitMQ (config mínima: docker-compose com rabbit).
-
-**Entrega Final — MVP pronto para demo**
-
-* Documentação consolidada (README geral + READMEs por service).
-* Script de demonstração (passo a passo).
-* Link/branch com código da versão entregue.
-
-
-### Critérios de aceitação por entrega
-
-* Endpoints principais estão documentados e funcionando.
-* Frontend básico exibindo e interagindo com as APIs.
-* Mensageria configura e publica/consome eventos básicos.
-* Log das transações disponível para auditoria.
-* Instruções claras para executar localmente (preferível com `docker-compose`).
-
-
-## 8. Definição do MVP (Produto Mínimo Viável) — critérios, escopo e checklist de aceitação
-
-### 8.1 Objetivo do MVP
+### 7.1 Objetivo do MVP
 
 Entregar um conjunto mínimo de funcionalidades completo e integrável que permita demonstrar o fluxo principal de uma corretora simulada: autenticar usuário, exibir saldo, executar depósito/ trade e receber confirmação via chat ou eventos.
 
-### 8.2 Escopo mínimo do MVP (must-have)
+### 7.2 Escopo mínimo do MVP (must-have)
 
 Os itens abaixo são obrigatórios para considerar o MVP funcional:
 
@@ -482,7 +395,7 @@ Os itens abaixo são obrigatórios para considerar o MVP funcional:
 * README geral com instruções de execução do sistema integrado e script de demonstração
 
 
-### 8.3 Critérios de Aceitação do MVP (detalhados)
+### 7.3 Critérios de Aceitação do MVP (detalhados)
 
 Para cada item do MVP existem critérios que definem aprovação:
 
@@ -515,7 +428,7 @@ Para cada item do MVP existem critérios que definem aprovação:
 * Usuário consegue autenticar, ver saldo, abrir trade e enviar mensagens ao chatbot (apesar de UI simples).
 
 
-### 8.4 Endpoints mínimos recomendados (resumo)
+### 7.4 Endpoints mínimos recomendados (resumo)
 
 * `POST /user/register`
 * `POST /user/login`
@@ -527,7 +440,7 @@ Para cada item do MVP existem critérios que definem aprovação:
 * `POST /chatbot/message`
 
 
-### 8.5 Métricas para considerar o MVP aceitável (para avaliação)
+### 7.5 Métricas para considerar o MVP aceitável (para avaliação)
 
 * **Funcionalidade:** 100% dos endpoints MVP respondendo conforme critérios de aceitação.
 * **Integração:** Eventos básicos publicados e consumidos (depósito e trade).
@@ -536,7 +449,7 @@ Para cada item do MVP existem critérios que definem aprovação:
 * **Robustez:** Tratamento básico de erros (400/401/500 com mensagens claras).
 
 
-### 8.6 Checklist técnico para entrega do MVP (para subir no repositório)
+### 7.6 Checklist técnico para entrega do MVP (para subir no repositório)
 
 * [ ] Repositório principal com README geral.
 * [ ] Subpastas / repositórios por serviço com README e instruções de execução.
@@ -547,7 +460,7 @@ Para cada item do MVP existem critérios que definem aprovação:
 * [ ] Branch final nomeada (ex.: `deliver/mvp`) ou tag com a versão entregue.
 
 
-### 8.7 Riscos conhecidos e mitigação (curto)
+### 7.7 Riscos conhecidos e mitigação (curto)
 
 * **Risco:** Falta de tempo para integrar RabbitMQ.
   **Mitigação:** Implementar publicação em log e simular consumo; documentar onde o consumo real deve acontecer.
@@ -557,13 +470,104 @@ Para cada item do MVP existem critérios que definem aprovação:
   **Mitigação:** Padronizar validação de JWT a partir de um secret/keystore compartilhado no `.env` de avaliação.
 
 
-
-## 9. Padrão de Documentação Exigido
+## 8. Padrão de Documentação Exigido
 
 Cada grupo deverá manter um **padrão de documentação técnica unificado** entre os microserviços, seguindo boas práticas de repositórios profissionais.
 A documentação faz parte da nota final e será avaliada em conjunto com o código e a apresentação.
 
-### 9.1 Estrutura Geral de Repositório
+Além dos arquivos de documentação no formato **Markdown (`.md`)**, cada grupo deverá **gerar uma documentação técnica adicional em PDF**, nomeada:
+
+```
+Documentacao_Tecnica_Projeto_Corretora.pdf
+```
+
+
+Esse documento deverá conter os **diagramas essenciais do projeto**, acompanhados de uma **breve explicação textual** de cada um, com o objetivo de evidenciar o entendimento técnico do grupo sobre a arquitetura e o funcionamento do sistema.
+
+### Elementos obrigatórios da documentação técnica em PDF
+
+**1. Diagrama de Arquitetura Geral do Sistema**
+Deve representar graficamente a visão macro da aplicação, destacando:
+
+* O **Frontend (Next.js)** e o **aplicativo mobile (React Native)** como camadas de interface.
+* O **API Gateway**, responsável por intermediar o tráfego entre os clientes e os microserviços.
+* Os **microserviços principais** (`UserAPI`, `WalletAPI`, `CurrencyAPI`, `ChatbotAPI`), com suas responsabilidades.
+* O **mecanismo de mensageria (RabbitMQ)**, indicando os fluxos assíncronos de eventos.
+* A **persistência de dados** (bancos SQLite ou outros) associada a cada serviço.
+  O diagrama deve deixar evidente como ocorre a comunicação entre os componentes (REST e eventos) e como as camadas se integram.
+
+
+**2. Diagramas de Classes (UML) — por microserviço**
+Cada microserviço deverá possuir um diagrama de classes UML simplificado, contendo:
+
+* **Entidades (models)**: classes que representam as tabelas do domínio (ex.: `User`, `Wallet`, `Currency`).
+* **Serviços (services)**: classes que implementam regras de negócio (ex.: `UserService`, `WalletService`).
+* **Repositórios (repositories)**: classes responsáveis pela persistência e acesso a dados.
+* **Interfaces (contracts)**: definindo os métodos esperados de serviços e repositórios.
+
+Cada diagrama deve conter:
+
+* Atributos principais de cada classe (sem necessidade de todos os tipos).
+* Relacionamentos entre classes (associações, dependências, heranças, etc.).
+* Uma breve legenda explicando as camadas (Application, Domain, Infrastructure).
+
+
+**3. DER — Diagrama Entidade-Relacionamento (por API)**
+Cada microserviço com persistência própria deve apresentar seu **modelo de dados relacional**:
+
+* Identificação das **entidades (tabelas)** e seus atributos essenciais.
+* Indicação das **chaves primárias e estrangeiras**.
+* Relacionamentos entre entidades (1:N, N:N, 1:1).
+* Cardinalidades e dependências entre dados (ex.: um `User` pode ter várias `Wallets`; uma `Wallet` pertence a um único `User`).
+
+O DER deve refletir o modelo efetivamente implementado nas classes de entidade do domínio.
+
+
+**4. Diagramas de Sequência — fluxos principais**
+Os diagramas de sequência devem representar as **interações entre componentes** durante os fluxos centrais do sistema.
+Fluxos obrigatórios:
+
+* **Login** → validação do usuário e emissão de token JWT.
+* **Depósito** → solicitação REST, processamento na `WalletAPI` e publicação de evento.
+* **Trade** → interação entre `WalletAPI` e `CurrencyAPI` para conversão de ativos.
+* **Depósito via Chatbot** → comando recebido no `ChatbotAPI`, publicado no RabbitMQ e processado pela `WalletAPI`.
+
+Cada diagrama deve apresentar:
+
+* As entidades participantes (Frontend, Gateway, APIs, RabbitMQ).
+* As mensagens trocadas (requisições REST, eventos, respostas).
+* O resultado final esperado (ex.: saldo atualizado, confirmação de trade).
+
+
+**5. Fluxo de Comunicação entre Serviços (REST e RabbitMQ)**
+Representar de forma consolidada as **rotas síncronas (HTTP)** e **eventos assíncronos (RabbitMQ)** do sistema.
+O diagrama pode combinar setas diretas (REST) e setas tracejadas (eventos).
+Deve ilustrar:
+
+* Principais endpoints utilizados entre serviços (ex.: `/wallet/trade`, `/currency/price`).
+* Exchanges e routing keys usadas no RabbitMQ (ex.: `wallet.events`, `chatbot.commands`).
+* Direção das mensagens e dependências entre os microserviços.
+
+
+**6. Descrição textual dos componentes e tecnologias**
+Após os diagramas, incluir uma seção descritiva com:
+
+* O papel de cada componente (ex.: GatewayAPI, UserAPI, WalletAPI etc.).
+* A tecnologia utilizada em cada camada (linguagem, frameworks, banco de dados, mensageria).
+* As principais decisões de design adotadas (ex.: uso de Clean Architecture, comunicação assíncrona, token JWT).
+* Versões e dependências mais relevantes.
+
+
+A **documentação em PDF** deverá ser criada pelo grupo e adicionada à **raiz do repositório**, com o nome padrão:
+
+```
+Documentacao_Tecnica_Projeto_Corretora.pdf
+```
+
+Ela servirá como **complemento visual e explicativo da documentação em Markdown**, sendo obrigatória para avaliação final.
+Todos os diagramas devem ser originais, elaborados pelo grupo (pode-se utilizar ferramentas como Draw.io, Lucidchart, PlantUML ou Mermaid).
+
+### 8.1 Estrutura Geral de Repositório
 
 Cada grupo poderá usar:
 
@@ -574,30 +578,31 @@ Cada grupo poderá usar:
 Em ambos os casos, é **obrigatório** incluir:
 
 ```
-📦 ProjetoCorretora/
+ProjetoCorretora/
 │
-├── README.md                   # Documentação geral do sistema
-├── docker-compose.yml           # Opcional, mas recomendado
-├── /userAPI/                    # Serviço de autenticação
+├── README.md                    # Documentação geral do sistema
+├── Documentacao_Tecnica_Projeto_Corretora.pdf  # Documento técnico com diagramas
+├── docker-compose.yml            # Opcional, mas recomendado
+├── /userAPI/                     # Serviço de autenticação
 │   ├── README.md
 │   └── ...
-├── /walletAPI/                  # Serviço de carteiras
+├── /walletAPI/                   # Serviço de carteiras
 │   ├── README.md
 │   └── ...
-├── /currencyAPI/                # Serviço de cotações
+├── /currencyAPI/                 # Serviço de cotações
 │   ├── README.md
 │   └── ...
-├── /chatbotAPI/                 # Serviço do chatbot
+├── /chatbotAPI/                  # Serviço do chatbot
 │   ├── README.md
 │   └── ...
-├── /frontend/                   # Aplicação web (Next.js)
+├── /frontend/                    # Aplicação web (Next.js)
 │   ├── README.md
 │   └── ...
-└── DEMO.md                      # Passo a passo de execução e apresentação
+└── DEMO.md                       # Passo a passo de execução e apresentação
 ```
 
 
-### 9.2 Estrutura mínima de cada `README.md` de serviço
+### 8.2 Estrutura mínima de cada `README.md` de serviço
 
 Cada serviço deve conter:
 
@@ -668,7 +673,7 @@ POST /user/login
 Anotar limitações conhecidas ou endpoints simulados.
 
 
-### 9.3 Documentação geral do sistema (`README.md` da raiz)
+### 8.3 Documentação geral do sistema (`README.md` da raiz)
 
 O documento principal do projeto deve conter:
 
@@ -688,7 +693,7 @@ docker-compose up -d
 ```
 
 
-### 9.4 Documento de Demonstração (`DEMO.md`)
+### 8.4 Documento de Demonstração (`DEMO.md`)
 
 Deve conter o **roteiro da apresentação final**, com os comandos e passos de teste na ordem esperada.
 Exemplo:
@@ -712,7 +717,7 @@ POST /chatbot/message "Qual meu saldo?"
 ```
 
 
-### 9.5 Padrão de Commits e Branches
+### 8.5 Padrão de Commits e Branches
 
 Para manter o histórico organizado e rastreável, adotar convenção semelhante a:
 
@@ -728,7 +733,7 @@ Branchs de desenvolvimento: `feature/`, `fix/`, `hotfix/`, `release/`
 Branch final para entrega: `deliver/mvp` ou `main` com tag `v1.0-final`.
 
 
-### 9.6 Padrão de Avaliação Técnica da Documentação
+### 8.6 Padrão de Avaliação Técnica da Documentação
 
 Durante a correção, serão observados:
 
@@ -743,11 +748,11 @@ Durante a correção, serão observados:
 **Pontuação total (documentação): 4,0 pontos** dentro da nota global.
 
 
-## 10. Critérios de Avaliação Final
+## 9. Critérios de Avaliação Final
 
 A avaliação final será composta pela **entrega técnica (código e documentação)** e pela **apresentação prática do MVP**, conforme rubrica a seguir.
 
-### 10.1 Estrutura de Avaliação
+### 9.1 Estrutura de Avaliação
 
 | Dimensão                                  | Peso        | Descrição                                                                            |
 | ----------------------------------------- | ----------- | ------------------------------------------------------------------------------------ |
@@ -760,7 +765,7 @@ A avaliação final será composta pela **entrega técnica (código e documenta�
 **Total: 10,0 pontos**
 
 
-### 10.2 Descritivo dos níveis de desempenho
+### 9.2 Descritivo dos níveis de desempenho
 
 **Excelente (9–10):**
 
@@ -790,7 +795,7 @@ A avaliação final será composta pela **entrega técnica (código e documenta�
 * Dificuldade em explicar arquitetura ou decisões de projeto.
 
 
-### 10.3 Requisitos obrigatórios para avaliação
+### 9.3 Requisitos obrigatórios para avaliação
 
 Para que o projeto seja avaliado, **todos os itens abaixo devem estar presentes**:
 
@@ -802,7 +807,7 @@ Para que o projeto seja avaliado, **todos os itens abaixo devem estar presentes*
 * Apresentação oral com tempo máximo de 10 a 12 minutos.
 
 
-### 10.4 Recomendações finais aos alunos
+### 9.4 Recomendações finais aos alunos
 
 * Priorize **funcionalidade e integração** antes da interface.
 * Documente **cada endpoint testado** (exemplo de request e response).
